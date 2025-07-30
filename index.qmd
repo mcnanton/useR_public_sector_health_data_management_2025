@@ -1,0 +1,797 @@
+---
+title: "Transforming Public Health Data Management: From Individual Use to Scalable Workflows with R"
+subtitle: "A Use Case from Argentina"
+format: clean-revealjs
+embed-resources: true
+html-math-method:
+  method: mathjax
+  url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+author:
+  - name: María Cristina Nanton
+    email: m.nanton@buenosaires.gob.ar
+    affiliations: Buenos Aires City Government | University of Buenos Aires
+  - name: Carolina Mengoni Goñalons
+    email: cmengoni@buenosaires.gob.ar
+    affiliations: Buenos Aires City Government | University of Buenos Aires
+  - name: Cecilia Palermo
+    email: ceciliapalermo@buenosaires.gob.ar
+    affiliations: Buenos Aires City Government | University of Buenos Aires
+---
+
+## Information and Health Statistics Management Office
+
+### Ministry of Health of the City of Buenos Aires
+
+::::: columns
+::: {.column width="60%"}
+![](imagenes/gogies_2025.jpg){fig-alt="25 people posing for a picture."}
+:::
+
+::: {.column width="40%"}
+-   30+ data analysts, scientists and engineers
+
+-   Interdisciplinary team
+
+-   Data Policy, Data Science and Data Engineering subteams
+:::
+:::::
+
+::: {.notes}
+Our office is composed of over 30 data analysts, scientists, and engineers. We’re an interdisciplinary team organized into three sub-teams: data policy, data science, and data engineering.
+:::
+
+## Information and Health Statistics Management Office
+
+**What we do**: Manage data and statistics pipelines
+
+::::: columns
+::: {.column width="50%"}
+#### Users
+
+-   Minister's Office
+
+-   Other government departments
+
+-   Managers and professionals at healthcare facilities
+
+-   Researchers
+
+-   Citizens
+:::
+
+::: {.column width="50%"}
+#### Goals
+
+-   Health policy and management decisions
+
+-   Population health tracking and monitoring
+
+-   Clinical decision making
+
+-   Research
+:::
+:::::
+
+::: {.notes}
+What do we do?
+
+We manage health data and statistical pipelines.
+Our users include the Minister’s office, other government departments, healthcare facility managers and professionals, researchers, and the general public.
+
+Our goals are to support health policy and management decisions, enable population health monitoring, inform clinical decision-making, and facilitate research.
+:::
+
+## Information and Health Statistics Management Office
+
+**How we do it**: design and mantain a data warehouse with processed data from our city's Health Information System
+
+![](imagenes/dw.png){fig-alt="" fig-align="center" width="400"}
+
+::: {.notes}
+How do we do it?
+
+We design and maintain a data warehouse that integrates processed data from the city’s health information system.
+
+As shown in this screenshot, the public healthcare centers generate data using the city's health information system, called SIGEHOS. We model this data and consolidate it into our internal data warehouse to develop data products.
+:::
+
+# The beginnings
+
+**2019 - March 2020**
+
+::: {.notes}
+We’ve divided our evolution into three stages. The first stage, which we call “The beginnings,” spans from 2019 to March 2020. We were a very different team back then...
+:::
+
+## The beginnings: 2019 - Mar 2020
+
+**🎯** The Spark: How It All Started
+
+🖥️ Recently implemented Electronic Health Record (EHR) in the city's Health Information System...
+
+::: fragment
+🚫... no specialized team to extract and model that data for secondary uses
+:::
+
+::: fragment
+**💡** Creation of the 10-person team that developed into our Office, the first ones to use that massive data to inform physicians, health centers and policy makers to make data-driven decisions
+:::
+
+::: {.notes}
+By 2019, Electronic Health Records were implemented in our city’s health information system, but something crucial was missing:
+There was no team to extract, model, and analyze that data for decision-making.
+That gap led to the creation of a small, 10-person team—us.
+Our first goal?
+Use this newly available data to support clinicians, health centers, and decision-makers with real, timely insights.
+:::
+
+## The beginnings: 2019 - Mar 2020
+
+### Initial Setup
+
+-   RStudio Server\
+-   Server for code outputs\
+-   Secure, open source on-premises platform for file sharing: Owncloud\
+-   On-premises GitLab
+
+![](imagenes/infra_inicial.png){fig-align="center"}
+
+<a href="https://www.flaticon.es/iconos-gratis/archivos-y-carpetas" title="archivos y carpetas iconos" style="font-size: 12px;"> Files and folders icons created by Freepik - Flaticon </a>
+
+::: {.notes}
+Our early setup was modest but functional:
+RStudio Server
+A server for code outputs
+On-premises platform for file sharing
+GitLab, hosted internally
+:::
+
+## The beginnings: 2019 - Mar 2020
+
+### Data sources
+
+![](imagenes/sis_his.png){fig-align="center"}
+
+::::: columns
+::: {.column width="50%"}
+![](imagenes/archivo-csv.png){fig-align="center" width="200"}
+:::
+
+::: {.column width="50%"}
+![](imagenes/csvs.png){fig-align="center" width="170"}
+:::
+:::::
+
+<a href="https://www.flaticon.es/iconos-gratis/archivo-csv" title="archivo csv iconos" style="font-size: 12px;"> Csv icons created by surang - Flaticon </a>
+
+::: {.notes}
+We modeled data from SIGEHOS, the city-wide health information system, using CSV files—one for each type of information: consultations, clinical notes, providers, pharmacies, and more, As illustrated in the screenshot below. The screenshot at the top depicts SIGEHOS, its many modules, and its Electronic health record module
+:::
+
+
+## The beginnings: 2019 - Mar 2020
+
+### Products
+
+::::: columns
+::: {.column width="50%" style="text-align: center;"}
+![](imagenes/logo_flex.png){fig-align="center"}
+
+Dashboards
+:::
+
+::: {.column width="50%" style="text-align: center;"}
+![](imagenes/excel.jpg){fig-align="center"} Health center activity reports
+:::
+:::::
+
+::: {.notes}
+We published Flexdashboard dashboards and reports in CSV/Excel, mostly summarizing activity across health centers.
+:::
+
+## The beginnings: 2019 - Mar 2020
+
+### Working with code
+
+-   Library: **agiseR**
+
+::: fragment
+-   Executions:
+    -   ✋ single-script manual runs
+    -   ✋ Pipelines: Manual runs + script sourcing
+:::
+
+::: fragment
+-   Environments:
+    -   ❌ No environment management... but almost all projects were solo projects
+:::
+
+::: {.notes}
+One of the first things we did was creating our own R library, agiseR, with useful functions wor working with our data sources
+Back then, pipelines and code executions were mostly manual, and projects were often solo efforts. 
+
+Also, There was no formal management of coding environments—but that was okay. The team was small. We could get by.
+:::
+
+## The beginnings: 2019 - Mar 2020
+
+### Working with code
+
+::: fragment
+-   Onboarding to code base:
+    -   Relied on specific individuals per topic area, around loosely defined shifting conventions for data constructs... also, there was no turnover 😃
+:::
+
+## The beginnings: 2019 - Mar 2020
+
+### Case study: work for Primary Care Division
+
+::::: columns
+::: {.column width="70%"}
+![](imagenes/tableroaps.png){fig-align="center"}
+:::
+
+::: {.column width="30%"}
+Basic reporting:
+
+-   Number of patients and consultations per health center
+
+-   Top problems (Problem-Oriented Medical Record)
+:::
+:::::
+
+::: {.notes}
+To make our journey more concrete, we’re going to follow one thread throughout: our evolving work with the Primary Care Division.
+Our first dashboards for the Primary Care Division were simple but impactful.
+As shown in this screenshot, We used Flexdashboard to show data visualizations metrics like:
+
+    Number of patients and consultations per facility
+
+    Most common reasons for consultation
+
+These indicators were also distributed via CSV and Excel reports, built manually and delivered periodically.
+
+Because our EHR system was problem-oriented, we could identify and share the top health issues presented in each center—insightful for both managers and clinicians.
+
+At this stage, the work was relatively static, updated occasionally, and focused on retrospective activity tracking.
+:::
+
+# Emergency and rapid development
+
+**Mar 2020 - 2022**
+
+::: {.notes}
+Then... everything changed and led us to a new stage that we call 
+:::
+
+## Emergency and rapid development: Mar 2020 - 2022
+
+What pushed us to the next level?
+
+## Emergency and rapid development: Mar 2020 - 2022
+
+What pushed us to the next level?
+
+![](imagenes/covid_mundo.png){fig-align="center" width="744"}
+
+::: {.notes}
+The covid pandemic arrived—and our reality flipped overnight.
+:::
+
+## Emergency and rapid development: Mar 2020 - 2022
+
+-   City with 3M inhabitants
+
+-   Massive circuits organized by the city:
+
+    -   Case follow up and patients health monitoring
+    -   Testing
+    -   Vaccination
+
+:::::: columns
+::: {.column width="33%"}
+![](imagenes/caba_1.jpg){fig-align="center"}
+:::
+
+::: {.column width="33%"}
+![](imagenes/caba_2.jpg){fig-align="center"}
+:::
+
+::: {.column width="33%"}
+![](imagenes/caba_3.jpg){fig-align="center"}
+:::
+::::::
+
+::: {.notes}
+The covid pandemic arrived—and our reality flipped overnight.
+
+Buenos Aires, with 3 million people, launched massive efforts:
+testing, contact tracing, vaccination—all powered by public healthcare facilities.
+
+In this slide theree are three pictures depicting the massive testing and vaccination centers located all over the city and organized by the health ministry
+
+Our statistics office was absolutely the main source of information for all of those strategies
+
+We needed to scale fast.
+:::
+
+## Emergency and rapid development: Mar 2020 - 2022
+
+### Data sources: data warehouse (🚀New!)
+
+![](imagenes/dw_2.png){fig-align="center" width="400"}
+
+::: {.notes}
+Scaling fast meant:
+
+Abandoning slow-updating CSVs AND building a relational data warehouse
+
+It meant creating new tables for the data warehouse representing consultations, providers, patients, phisicians clinical notes, etc
+:::
+
+## Emergency and rapid development: Mar 2020 - 2022
+
+### Products
+
+#### Dashboards
+
+![](imagenes/dashboards.png){fig-align="center"}
+
+::: {.notes}
+We started publishing dashboards and reports every week, every day—even every few hours, on topics such as testing, vaccination, and state of the citys resources
+The screenshots in this slide show 4 dashboards with matrics and data visualizations, one for vaccinations, another one for Personal Protective Equipment Supply Status, and two for testing centers activity
+:::
+
+## Emergency and rapid development: Mar 2020 - 2022
+
+### Products
+
+#### (New!) Indicators and metrics
+
+::::: columns
+::: {.column width="50%"}
+-   Health traking
+
+-   Expense Recovery
+
+-   Decision-Making
+
+-   🔄 ***Weekly, Daily, and Multiple Daily Reports***
+:::
+
+::: {.column width="50%"}
+![](imagenes/turing-rss-no-text.jpg){fig-align="center"}
+:::
+:::::
+
+[This illustration is created by Scriberia with The Turing Way community. Used under a CC-BY 4.0 licence. DOI: 10.5281/zenodo.3332807]{style="font-size: 12px;"}
+
+::: {.notes}
+
+Our role as the main suppliers of health data in the public sector during the pandemic meant that we had to move fast to build new pipelines and reports that supported new metrics and indicadors for health monitoring, expenses recovery and supporting decision making at every level
+
+That level of responsiveness had never existed in our team before, and it was only possible because we automated, streamlined, and got very serious about our code and data infrastructure.
+
+:::
+
+## Emergency and rapid development: Mar 2020 - 2022
+
+### Working with code
+
+-   Executions:
+    -   ✋ Manual runs
+    -   🚀 Automation via cron jobs (with **agiseR** functions to try-catch error capturing and sending messages via email and telegram!)
+    -   🚀 Pipelines: at first, manual runs \[sic\] + script sourcing, organized in folders with clear versioning. Later, cron jobs 🤖
+
+::: fragment
+-   Environments:
+    -   ❌ No environment capture... but almost all projects were (still) solo projects
+:::
+
+::: {.notes}
+We still did manual code runs, but we developed internal tools to:
+-Automate pipelines using cron jobs
+-Detect errors and send real-time alerts via email and Telegram
+-Handle unstable data sources, which were constantly changing
+
+At first, manual execution was common to check that everything was running smoothly in a context of regular changes in our data sources. But as stability improved, we automated aggressively—because serious stakeholders depended on the data getting through.
+
+We still didn't implement tools for managing our code's environment..but almost all projects were (still) solo projects
+:::
+
+## Emergency and rapid development: Mar 2020 - 2022
+
+### Working with code
+
+#### Onboarding to code base
+
+-   Relied on specific individuals per topic area, around loosely defined shifting conventions for data constructs... ~~also, there was no turnover~~
+
+::: {.notes}
+A novelty for us in this stage was dealing with team turnover, not a surprise in a high-pressure, unpredictable context  
+:::
+
+## Emergency and rapid development: Mar 2020 - 2022
+
+### Working with code
+
+#### Onboarding to code base
+
+-   Relied on specific individuals per topic area, around loosely defined shifting conventions for data constructs... ~~also, there was no turnover~~
+-   😓 Anarchic, heterogeneous, one-to-one as team members left and new people were hired to replace them.
+-   😓 Project-based organization. Clear need to structure technical assets documentation.
+
+::: {.notes}
+Onboarding became anarchic, heterogeneous, one-to-one as team members left and new people were hired to replace them
+The need for better onboarding and documentation practices became evident.
+We moved from ad-hoc handovers to project-based code organization, and we began investing in documentation.
+:::
+
+## Emergency and rapid development: Mar 2020 - 2022
+
+### Working with code
+
+![](imagenes/documentation_framework.png){fig-align="center" width="400"}
+
+<span style="font-size: 12px;">Imagen: <a href="https://docs.divio.com/documentation-system/" target="_blank">Divio</a></span>
+
+::: {.notes}
+We adopted the Divio documentation framework that divides technical documentation in:
+-Tutorials
+-How-to guides
+-Explanations
+-References
+
+The image shows a four-quadrant matrix that classifies types of technical documentation:
+Tutorials and How-to Guides are at the top — focused on practical steps.
+Explanations and Reference are at the bottom — focused on theory and information.
+The horizontal axis shows usefulness: content for studying (left) vs. working (right).
+:::
+
+## Emergency and rapid development: Mar 2020 - 2022
+
+### Working with code
+
+![](imagenes/gogies_documentation_framework.png){fig-align="center" width="400"}
+
+::: {.notes}
+We made an effort to map our documentation assets (and their dispersion in different platforms) using this framework: this gave structure to our growing codebase and helped us rething where we stored our technical documentation and procedures, which weree all over the place (slack, google drive, microsoft teeams, gitlab, etc)
+:::
+
+## Emergency and rapid development: Mar 2020 - 2022
+
+### Case study: work for Primary Care Division
+
+::: fragment
+-   Reports with a new Perspective:
+    -   Before: ➕ counting patients who received care by facility
+    -   Now: 🔬 Re-engaging prioritized populations who missed care during the pandemic
+        -   Detection of health conditions
+        -   Profiling individuals for follow-up
+:::
+
+::: fragment
+-   🧠 Long-term strategies required stable and scalable processes
+:::
+
+::: fragment
+-   🚀 **First Data Mart table: sociodemographic registry**
+:::
+
+::: {.notes}
+Before COVID, our work with the Primary Care Division focused on indicators like visits per facility or top reasons for consultations.
+
+After COVID, the challenge evolved:
+-How do we re-engage patients who missed care during the pandemic?
+
+This required identifying at-risk populations, tracking chronic conditions, and  NEXT SLIDE building long-term, scalable processes.
+
+NEXT
+This led to our first datamart—with a sociodemographic registry of people in contact with the health system.
+This datamart became the backbone for targeted re-engagement efforts.
+:::
+
+::: {.notes}
+And at this point, we were at a very different stage, that we can call maturity and consolidation, from 2022 to now
+:::
+
+# Maturity and consolidation
+
+**2022 - now**
+
+## Maturity and consolidation: 2022 - now
+
+What pushed us to the next level?
+
+::::: columns
+::: {.column width="50%"}
+*Internal* drivers:
+
+-   Fully remote team grown from 10 to 30+ people
+-   Team members entered at different stages—pre-COVID in-person, virtual during COVID, and post-COVID—leading to differing work habits and collaboration styles.
+:::
+
+::: {.column width="50%"}
+![](imagenes/hybrid-work-no-text.jpg){fig-align="center"}
+
+[This illustration is created by Scriberia with The Turing Way community. Used under a CC-BY 4.0 licence. DOI: 10.5281/zenodo.3332807]{style="font-size: 12px;"}
+:::
+:::::
+
+::: {.notes}
+By 2022, we had emerged on the other side of the tunnel, and the systems we had created in crisis were just the beginning. Now we had the chance to consolidate what worked, scale it up, and plan for the long term.
+
+Our team had also changed.
+
+We were now a fully remote group of 30+ people with different onboarding stories:
+
+-Some joined in person, before COVID
+
+-Others were hired during the pandemic, completely remote
+
+-And many joined after, into a team that had already become complex and distributed
+
+That led to differing work habits and collaboration styles, something we HAD to adress
+
+:::
+
+## Maturity and consolidation: 2022 - now
+
+What pushed us to the next level?
+
+::::: columns
+::: {.column width="50%"}
+*External* drivers:
+
+As the urgency of COVID-related projects subsided, medium- and long-term initiatives emerged, demanding the added value of seasoned analysts.
+:::
+
+::: {.column width="50%"}
+
+![](imagenes/reproducible-pipeline-no-text.jpg){fig-align="center"}
+
+<span style="font-size: 12px;">This illustration is created by Scriberia with The Turing Way community. Used under a CC-BY 4.0 licence. DOI: 10.5281/zenodo.3332807</span>
+
+:::
+::::: 
+
+::: {.notes}
+As COVID-related urgency faded, new kinds of projects emerged.
+They weren’t about crisis management—they were about long-term sanitary strategy.
+They required seasoned analysts, stronger infrastructure, and specialized skill sets to build data products and infrastructure for the future.
+:::
+
+## Maturity and consolidation: 2022 - now
+
+### Our Ecosystem Today:
+
+#### Fully grown data warehouse + data marts
+
+![](imagenes/collaboration-types-no-text.jpg){fig-align="center"}
+
+<span style="font-size: 12px;">This illustration is created by Scriberia with The Turing Way community. Used under a CC-BY 4.0 licence. DOI: 10.5281/zenodo.3332807</span>
+
+::: {.notes}
+¿How is Our Ecosystem Today?
+
+We now maintain:
+
+-A mature data warehouse
+
+-Several domain-specific datamarts
+:::
+
+## Maturity and consolidation: 2022 - now
+
+### Products
+
+-   Complex phenotyping projects
+-   Transversal use of Shiny apps & dashboarding
+-   Solid data warehouse & data marts creating and monitoring processes
+
+![](imagenes/maturity_tools.png){fig-align="center"}
+
+<a href="https://www.flaticon.es/iconos-gratis/base-de-datos" title="base de datos iconos" style="font-size: 12px;"> Database icons created by juicy_fish - Flaticon </a>
+
+::: {.notes}
+As for our data products, that now come in any shape and size, wee developed regular pipelines and processes for patient phenotyping, health monitoring and tracking, and health coverage analysis, among others
+We make a ransversal use of Shiny apps & dashboarding, and we also created solid data warehouse & data marts creating and monitoring processes for the data engineering and data science teams
+:::
+
+## Maturity and consolidation: 2022 - now
+
+### Working with code
+
+::: fragment
+-   Executions:
+    -   ✋ Manual runs
+    -   🤖 Automation via cron jobs (with **agiseR** functions to try-catch error capturing and sending messages via email and telegram!)
+    -   🚀 **Cron jobs data mart**
+:::
+
+::: {.notes}
+For developing those data products we still use manual code runs for ad-hoc analysis, but we run most of it trough cron jobs - and we finally created a cron job datamart to monitor automated executions
+:::
+
+## Maturity and consolidation: 2022 - now
+
+### Working with code
+
+#### Pipelines
+
+![](imagenes/MachineLearningReusablePipeline.jpg){fig-align="center"}
+
+[This illustration is created by Scriberia with The Turing Way community. Used under a CC-BY 4.0 licence. DOI: 10.5281/zenodo.3332807]{style="font-size: 12px;"}
+
+::: {.notes}
+As for the data processing pipelines, well, they became a BIG part of or job
+:::
+
+## Maturity and consolidation: 2022 - now
+
+### Working with code
+
+#### Pipelines: rtasker! (new tool 🚀)
+
+![](imagenes/rtasker.png){fig-align="center"}
+
+::: {.notes}
+We developed the Rtasker: a visual interface that shows pipeline execution flows via colored graphs
+
+A graph represents the structure of a data pipeline. Each node corresponds to a script with a task, and the arrows indicate execution order and dependencies. The flow goes from top to bottom, starting with "Domingo" (Sunday)" (the day the pipeline starts) and ending with "Fin" (End).
+Right Side – Execution History Table:
+Rows: Correspond to each pipeline step/task from the flowchart.
+Columns: Represent execution dates (from 6/29 to 7/23).
+Dots: Indicate status for each task on a given day:
+
+:::
+
+## Maturity and consolidation: 2022 - now
+
+### Working with code
+
+#### Pipelines: rtasker! (new tool 🚀)
+
+![](imagenes/rtaskerb.png){fig-align="center"}
+
+::: {.notes}
+However, we are also analyzing using the targets package for managing our data workflows 
+:::
+
+## Maturity and consolidation: 2022 - now
+
+### Working with code
+
+#### Environments
+
+With 30+ team members, we have almost none solo projects...
+
+![](imagenes/renv_logo.png){fig-align="center"}
+
+::: {.notes}
+With 30+ team members, we have almost none solo projects...
+To manage collaborative coding environments more effectively in a large team we started using renv, a great tool for managing r packages in a project.
+:::
+
+## Maturity and consolidation: 2022 - now
+
+### Working with code
+
+#### Onboarding to code base: Now a key issue!
+
+![](imagenes/research-foundation-no-text.jpg){fig-align="center"}
+
+[This illustration is created by Scriberia with The Turing Way community. Used under a CC-BY 4.0 licence. DOI: 10.5281/zenodo.3332807]{style="font-size: 12px;"}
+
+::: {.notes}
+Given our growth, onboarding became a priority. 
+:::
+
+## Maturity and consolidation: 2022 - now
+
+### Working with code
+
+#### Onboarding: internal Data Science team quarto website!
+
+![](imagenes/micrositio_1.png){fig-align="center"}
+
+::: {.notes}
+We created A Quarto Data Science Team internal website for our technical documentation
+:::
+
+## Maturity and consolidation: 2022 - now
+
+### Working with code
+
+#### Onboarding to code base: practical guide
+
+![](imagenes/guia_insercion.png){fig-align="center"}
+
+::: {.notes}
+And also we creeateed Practical Guide for Onboarding new team members, soon to be updated in the internal website 
+:::
+
+## Maturity and consolidation: 2022 - now
+
+### Case study: work for Primary Care Division
+
+-   🚀New information needs
+
+    -   Monitoring and management of *Healthcare Teams*
+    -   Outcome Indicators for Healthcare service lines (such as Health Checkups and Immunization Coverage)
+
+::: {.notes}
+Returning to our work for the the Primary Care Division—new demands emerged around monitoring healthcare team activities and outcomes for healthcare service lines such as checkups and immunizations.
+:::
+
+## Maturity and consolidation: 2022 - now
+
+### Case study: work for Primary Care Division
+
+::::: columns
+::: {.column width="50%"}
+-   💪Data mart growth
+
+    -   Stable and regular processes for modelling
+        -   Health Conditions, Health Coverage
+        -   Activity of Healthcare Teams and Primary Care Physicians
+        -   Medical Services Provided
+:::
+
+::: {.column width="50%"}
+![](imagenes/datamart_1.png){fig-align="center"}
+:::
+:::::
+
+::: {.notes}
+Those new needs led to more tables in our datamart and structured processes to model health conditions, care coverage, and healtcare team activity
+:::
+
+# Lessons learned
+
+## What have we learned?
+
+Internal data engineering teams for project alignment
+
+![](imagenes/data-wrangler-no-text.jpg){fig-align="center"}
+
+[This illustration is created by Scriberia with The Turing Way community. Used under a CC-BY 4.0 licence. DOI: 10.5281/zenodo.3332807]{style="font-size: 12px;"}
+
+::: {.notes}
+Data engineers must be just as invested in outcomes of the data projects as the data scientists writing the code. Involve them early, make them be present in stakeholder meetings, and give them credit for the work they do to make our data products a reality.
+:::
+
+## What have we learned?
+
+Invest in interdisciplinary teams
+
+![](imagenes/integrating-practices-no-text.jpg){fig-align="center"}
+
+[This illustration is created by Scriberia with The Turing Way community. Used under a CC-BY 4.0 licence. DOI: 10.5281/zenodo.3332807]{style="font-size: 12px;"}
+
+::: {.notes}
+We work with physicians, social scientists, academics, and industry professionals. That diversity has been critical for dealing with challenges that in their origins can be technical, communicational, or of project management.
+:::
+
+## What have we learned?
+
+Free, open source pays off
+
+![](imagenes/opensource.png){fig-align="center"}
+
+::: {.notes}
+And lastly, we couldn’t have done any of this without free, transparent open tools. They allowed us to respond quickly, be flexible and adaptable and create high-impact data products in an environment where resources, priorities, and policies could shift at any moment.
+:::
+
+# Thanks!
+
+Questions? Contact us at m.nanton\@buenosaires.gob.ar
+
+![](imagenes/gogies_2.png){fig-align="center"}
+
+::: {.notes}
+That’s our story—from a small team with their handful of CSVs to a mature data ecosystem powering public health.
+
+We’re happy to take your questions.
+Please reach out anytime!
+:::
