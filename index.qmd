@@ -350,7 +350,7 @@ The screenshots in this slide show 4 dashboards with matrics and data visualizat
 
 ::::: columns
 ::: {.column width="50%"}
--   Health traking
+-   Health tracking
 
 -   Expense Recovery
 
